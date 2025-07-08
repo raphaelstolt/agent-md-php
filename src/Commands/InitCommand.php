@@ -25,7 +25,7 @@ final class InitCommand extends Command
         $file = $input->getArgument('file');
 
         if (\file_exists($file)) {
-            $output->writeln("<error>❌ File already exists: $file</error>");
+            $output->writeln("File <info>$file</info> already exists");
             return Command::FAILURE;
         }
 
@@ -47,7 +47,7 @@ An AI assistant that is helpful, concise, and informative.
 MD;
 
         \file_put_contents($file, $template);
-        $output->writeln("<info>✅ AGENT.md created at: $file</info>");
+        $output->writeln("AGENT.md created at <info>$file</info>");
         return Command::SUCCESS;
     }
 }
