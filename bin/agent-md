@@ -1,0 +1,35 @@
+#!/usr/bin/env php
+
+<?php
+
+use Stolt\AgentMd\Commands\MigrateCommand;
+use Stolt\AgentMd\Commands\InitCommand;
+use Stolt\AgentMd\Commands\InfoCommand;
+use Stolt\AgentMd\Commands\ValidateCommand;
+use Symfony\Component\Console\Application;
+
+$autoloaded = false;
+$autoloads = [
+    __DIR__ . '/../../../autoload.php',
+    __DIR__ . '/../vendor/autoload.php',
+    __DIR__ . '/vendor/autoload.php',
+];
+
+foreach (\array_filter($autoloads, 'file_exists') as $autoload) {
+    require $autoload;
+    $autoloaded = true;
+    break;
+}
+
+if (false === $autoloaded) {
+   echo('You need to set up the project dependencies by running the following command:' . PHP_EOL .
+       '> composer install' . PHP_EOL);
+   exit(1);
+}
+
+\define('VERSION', '0.0.1');
+
+$application = new Application('agent-md-php', VERSION);
+$application->addCommands([new ValidateCommand(), new InfoCommand(), new InitCommand(), new MigrateCommand()]);
+$application->run();
+
